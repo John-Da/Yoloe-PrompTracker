@@ -13,6 +13,7 @@ build/
 *.onnx
 *.mlmodel
 *.mlpackage
+*.ts
 
 # Video files
 *.mp4
