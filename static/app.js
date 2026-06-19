@@ -1,11 +1,4 @@
-// ─────────────────────────────────────────────
-//  Vision Search Studio — app.js
-//  Canvas-based frame player + YOLOE detection
-// ─────────────────────────────────────────────
 
-// ── Backend config ────────────────────────────
-// Paste your ngrok URL here each Colab restart.
-// e.g. "https://abc123.ngrok-free.app"
 const API_BASE = "http://127.0.0.1:5000";
 
 // ── COCO Labels (used as YOLOE text prompts) ──
@@ -97,7 +90,7 @@ function selectPrompt(label, btn) {
 
   if (videoLoaded) {
     setStatus('running');
-    runDetection(); // kick off immediately on prompt select
+    runDetection();
   }
 }
 
@@ -161,8 +154,8 @@ function onVideoPlay() {
 function startDetectionLoop() {
   stopDetectionLoop();
   detectionLoop = setInterval(() => {
-    runDetection(); // skipped automatically if previous call still pending
-  }, 10); // tries every 100ms, but won't overlap
+    runDetection();
+  }, 10);
 }
 
 function onVideoPause() {
@@ -182,7 +175,6 @@ function stopDetectionLoop() {
 
 
 // ── FPS Simulation ────────────────────────────
-// Replace with real FPS from your Flask backend (WebSocket / SSE)
 function startFpsSim() {
   fpsInterval = setInterval(() => {
     const fps = (24 + Math.random() * 10).toFixed(1);
@@ -203,12 +195,11 @@ async function runDetection() {
   detecting = true;
 
   const canvas = document.createElement("canvas");
-  // ↓ Downscale for speed — server still gets enough detail
   canvas.width = 640;
   canvas.height = Math.round(mainVideo.videoHeight * (640 / mainVideo.videoWidth));
   const ctx = canvas.getContext("2d");
   ctx.drawImage(mainVideo, 0, 0, canvas.width, canvas.height);
-  const frame_b64 = canvas.toDataURL("image/jpeg", 0.6).split(",")[1]; // lower quality = faster
+  const frame_b64 = canvas.toDataURL("image/jpeg", 0.6).split(",")[1];
 
   try {
     const res = await fetch(`${API_BASE}/api/detect`, {
@@ -227,7 +218,7 @@ async function runDetection() {
   } catch (err) {
     addLog("warn", err.message);
   } finally {
-    detecting = false; // ← always unlock, even on error
+    detecting = false;
   }
 }
 
@@ -307,10 +298,6 @@ function setStatus(state) {
 }
 
 // ── Event Log ─────────────────────────────────
-/**
- * @param {'event'|'prompt'|'warn'} type
- * @param {string} message
- */
 function addLog(type, message) {
   const now = new Date();
   const ts = now.toTimeString().slice(0, 8);
