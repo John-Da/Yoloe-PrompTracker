@@ -1,0 +1,37 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# Models
+*.pt
+*.onnx
+*.mlmodel
+*.mlpackage
+
+# Video files
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Temp / export artifacts
+*_out.mp4
+tmp_*.mp4
+
+# macOS
+.DS_Store
+.AppleDouble
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Env
+.env

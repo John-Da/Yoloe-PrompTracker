@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PromptTracker</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- ── Header ── -->
+    <header class="header">
+      <div class="header-left">
+        <h1><i class="ti ti-eye-scan" aria-hidden="true"></i>PromptTraker</h1>
+        <p>Prompt-based Object Detection and Tracking</p>
+      </div>
+      <span class="header-badge">YOLOE</span>
+    </header>
+
+    <!-- ── Control Bar ── -->
+    <div class="control-bar">
+      <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+        <i class="ti ti-upload" aria-hidden="true"></i> Upload Video
+      </button>
+      <input type="file" id="fileInput" accept="video/*" onchange="loadVideo(event)" />
+
+      <button class="btn" onclick="exportVideo()">
+        <i class="ti ti-download" aria-hidden="true"></i> Export Video
+      </button>
+
+      <div class="status-badge status-idle" id="statusBadge">
+        <div class="dot dot-idle" id="statusDot"></div>
+        <span id="statusText">Idle</span>
+      </div>
+
+      <div class="fps-indicator">
+        <i class="ti ti-cpu" aria-hidden="true"></i>
+        <span id="fpsVal">-- FPS</span>
+      </div>
+    </div>
+
+    <!-- ── Main Content ── -->
+    <main class="main">
+
+      <!-- Prompt Selection -->
+      <section class="prompt-section">
+        <div class="section-title">Prompt Selection</div>
+        <div class="labels-grid" id="labelsGrid"></div>
+        <div class="conf-row">
+          <label for="confSlider">Confidence Threshold</label>
+          <input
+            type="range"
+            id="confSlider"
+            min="0" max="1" step="0.01" value="0.5"
+            oninput="updateConf(this.value)"
+          />
+          <span class="conf-val" id="confVal">0.50</span>
+        </div>
+      </section>
+
+      <!-- Video + Summary -->
+      <div class="content-area">
+
+        <!-- Left: Video Panel -->
+        <div class="video-panel">
+          <div class="video-toolbar">
+            <i class="ti ti-video" aria-hidden="true"></i>
+            <span id="videoLabel">No video loaded</span>
+            <span class="tracking-status" id="trackingStatus"></span>
+          </div>
+          <div class="video-wrapper" id="videoWrapper">
+            <video id="mainVideo" controls onplay="onVideoPlay()" onpause="onVideoPause()" ontimeupdate="onTimeUpdate()"></video>
+            
+            <!--<img id="mainVideo" style="display:none;" />-->
+            
+            <div class="placeholder" id="placeholder">
+              <i class="ti ti-player-play" aria-hidden="true"></i>
+              <p>Upload a video to begin detection</p>
+            </div>
+            <svg class="bbox-overlay" id="bboxOverlay"></svg>
+          </div>
+        </div>
+
+        <!-- Right: Detection Summary -->
+        <aside class="side-panel">
+          <div class="summary-card">
+            <div class="section-title">Detection Summary</div>
+            <div class="stat-row">
+              <span class="stat-label">Current Prompt</span>
+              <span class="stat-val highlight" id="s-prompt">—</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Objects Found</span>
+              <span class="stat-val success" id="s-objects">0</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Active Track IDs</span>
+              <span class="stat-val" id="s-tracks">—</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Avg Confidence</span>
+              <span class="stat-val" id="s-conf">—</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Current Frame</span>
+              <span class="stat-val" id="s-frame">—</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Total Frames</span>
+              <span class="stat-val" id="s-total">—</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Processing FPS</span>
+              <span class="stat-val highlight" id="s-fps">—</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Event Log -->
+      <section class="log-panel">
+        <div class="log-header">
+          <span class="section-title">Event Log</span>
+          <button class="clear-log" onclick="clearLog()">
+            <i class="ti ti-trash" aria-hidden="true"></i> clear
+          </button>
+        </div>
+        <div class="log-area" id="logArea"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
