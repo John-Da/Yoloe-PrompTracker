@@ -21,7 +21,7 @@ A browser-based video analysis tool powered by **YOLOE** (You Only Look Once Eve
 |---|---|
 | Frontend | Vanilla JS, HTML5 Canvas, SVG overlay |
 | Backend | Python, Flask, Flask-CORS |
-| Detection | [Ultralytics YOLOE](https://github.com/ultralytics/ultralytics) |
+| Detection | [Ultralytics YOLOE](https://docs.ultralytics.com/models/yoloe#introduction) |
 | Vision | OpenCV |
  
 ---
