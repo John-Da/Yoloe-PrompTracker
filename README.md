@@ -121,12 +121,12 @@ Yoloe-PrompTracker/
  
 ## 🔮 Outputs
 
- - Preview
+ - Preview ( label - Cat as Tigger )
 
 https://github.com/user-attachments/assets/82de62e8-0b9c-4263-9a6a-205f72f714d7
 
 
- - Exported
+ - Exported ( label - Person )
 
 https://github.com/user-attachments/assets/a7b4e735-8281-4b11-bf0c-61ec500958d0
 
